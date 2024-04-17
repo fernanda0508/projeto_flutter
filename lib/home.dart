@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/propostas.dart';
 import 'rodape.dart';
 import 'cabecalho.dart';
 
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: IndexedStack(
           index: _selectedIndex,
           children: const <Widget>[
-            Text('Página de Proposições'),
+            PropostasScreen(),
             Text('Página de Deputados'),
           ],
         ),

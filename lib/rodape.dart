@@ -25,7 +25,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.format_list_bulleted),
-          label: 'Proposições',
+          label: 'Propostas',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
