@@ -4,10 +4,8 @@ class PropostasScreen extends StatefulWidget {
   const PropostasScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _PropostasScreenState createState() => _PropostasScreenState();
 }
-
 
 class _PropostasScreenState extends State<PropostasScreen> {
   @override
@@ -19,10 +17,52 @@ class _PropostasScreenState extends State<PropostasScreen> {
           children: [
             Container(
               alignment: Alignment.topCenter,
-              child: const Text('Propostas', style: TextStyle(fontSize: 40),),
+              child: const Text('Propostas', style: TextStyle(fontSize: 40)),
             ),
-            Container(
-              child: const Text('Tema selecionado', style: TextStyle(fontSize: 15),),
+            const Text('Tema selecionado', style: TextStyle(fontSize: 15)),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: ListView(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: const Text('Fotografia no título de eleitor', style: TextStyle(fontSize: 20)),
+                    ),
+                    const SizedBox(height: 10), // Adicionando espaçamento entre os itens da lista
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: const Text('Jogo ou Aposta', style: TextStyle(fontSize: 20)),
+                    ),
+                    const SizedBox(height: 10), // Adicionando espaçamento entre os itens da lista
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: const Text('02 de julho como data histórica', style: TextStyle(fontSize: 20)),
+                    ),
+                    const SizedBox(height: 10), // Adicionando espaçamento entre os itens da lista
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black),
+                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                      ),
+                      child: const Text('Objeto da patente em Território Nacional', style: TextStyle(fontSize: 20)),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
