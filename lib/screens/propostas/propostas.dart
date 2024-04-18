@@ -1,88 +1,104 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 
+import '../../models/proposta.dart';
+import '../../services/api_service.dart';
+import 'proposta_detail_screen.dart'; // Importar a tela de detalhes da proposta
+
 class PropostasScreen extends StatefulWidget {
-  const PropostasScreen({super.key});
+  const PropostasScreen({Key? key}) : super(key: key);
 
   @override
   _PropostasScreenState createState() => _PropostasScreenState();
 }
 
 class _PropostasScreenState extends State<PropostasScreen> {
+  late Future<List<Proposta>> futurePropostas;
+
+  @override
+  void initState() {
+    super.initState();
+    futurePropostas = ApiService().fetchPropostas();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Column(
-          children: [
-            Container(
-              alignment: Alignment.topCenter,
-              child: const Text('Propostas', style: TextStyle(fontSize: 40)),
-            ),
-            const Text('Tema selecionado', style: TextStyle(fontSize: 15)),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: ListView(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
+      appBar: AppBar(
+        title: const Text('Propostas'),
+        backgroundColor: Colors.blue, // Cor de fundo da AppBar
+      ),
+      body: FutureBuilder<List<Proposta>>(
+        future: futurePropostas,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Erro ao carregar os dados: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('Nenhuma proposta encontrada.'));
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                Proposta proposta = snapshot.data![index];
+                return InkWell(
+                  onTap: () {
+                    // Navegar para a tela de detalhes da proposta quando clicado
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetalhesPropostaScreen(proposta: proposta),
                       ),
-                      child: const Text('Fotografia no título de eleitor',
-                          style: TextStyle(fontSize: 20)),
-                    ),
-                    const SizedBox(
-                        height:
-                            10), // Adicionando espaçamento entre os itens da lista
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
+                    );
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(8),
+                              color: Colors.blue, // Cor de fundo do container da imagem
+                              // image: DecorationImage(
+                              //   image: NetworkImage(proposta.urlImagem),
+                              //   fit: BoxFit.cover,
+                              // ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    proposta.ementa,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text('Tipo: ${proposta.siglaTipo}'),
+                                  Text('Número: ${proposta.numero}'),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: const Text('Jogo ou Aposta',
-                          style: TextStyle(fontSize: 20)),
                     ),
-                    const SizedBox(
-                        height:
-                            10), // Adicionando espaçamento entre os itens da lista
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: const Text('02 de julho como data histórica',
-                          style: TextStyle(fontSize: 20)),
-                    ),
-                    const SizedBox(
-                        height:
-                            10), // Adicionando espaçamento entre os itens da lista
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12)),
-                      ),
-                      child: const Text(
-                          'Objeto da patente em Território Nacional',
-                          style: TextStyle(fontSize: 20)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+                  ),
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }
