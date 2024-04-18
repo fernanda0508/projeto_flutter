@@ -55,13 +55,20 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
               itemBuilder: (context, index) {
                 Deputado dep =
                     snapshot.data![index]; // Deputado atual na lista.
+                // InkWell é um widget material que responde ao toque com um efeito de "splash".
                 return InkWell(
                   onTap: () {
+                    // Evento que é chamado quando o InkWell é tocado.
                     Navigator.push(
-                      context,
+                      // Navigator é o widget que gerencia a pilha de rotas (telas).
+                      context, // Contexto do widget atual, usado para encontrar o Navigator.
                       MaterialPageRoute(
-                        builder: (context) =>
-                            DeputadoDetailScreen(deputado: dep),
+                        // MaterialPageRoute é uma rota que usa transições de tela do material design.
+                        builder:
+                            (context) => // Builder é uma função que constrói o widget para a nova rota.
+                                DeputadoDetailScreen(
+                                    deputado:
+                                        dep), // Cria a tela de detalhes para o deputado selecionado.
                       ),
                     );
                   },
