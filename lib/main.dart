@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/propostas.dart';
-import 'cabecalho.dart';
-import 'rodape.dart';
-import 'home.dart';
+import 'screens/home.dart';
 
 void main() => runApp(const MyApp());
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/propostas.dart';
-import 'rodape.dart';
-import 'cabecalho.dart';
+import 'package:flutter_application_1/screens/deputados/deputados.dart';
+import 'package:flutter_application_1/screens/propostas/propostas.dart';
+import '../components/rodape.dart';
+import '../components/cabecalho.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           index: _selectedIndex,
           children: const <Widget>[
             PropostasScreen(),
-            Text('Página de Deputados'),
+            DeputadosScreen(),
           ],
         ),
       ),

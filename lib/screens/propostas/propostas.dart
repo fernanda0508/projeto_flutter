@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 
 class PropostasScreen extends StatefulWidget {
@@ -27,42 +29,53 @@ class _PropostasScreenState extends State<PropostasScreen> {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(10),
-                      height: 90,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
-                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
                       ),
-                      child: const Text('Fotografia no título de eleitor', style: TextStyle(fontSize: 20),),
+                      child: const Text('Fotografia no título de eleitor',
+                          style: TextStyle(fontSize: 20)),
                     ),
-                    const SizedBox(height: 10), // Adicionando espaçamento entre os itens da lista
+                    const SizedBox(
+                        height:
+                            10), // Adicionando espaçamento entre os itens da lista
                     Container(
                       padding: const EdgeInsets.all(10),
-                      height: 90,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
-                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
                       ),
-                      child: const Text('Jogo ou Aposta', style: TextStyle(fontSize: 20)),
+                      child: const Text('Jogo ou Aposta',
+                          style: TextStyle(fontSize: 20)),
                     ),
-                    const SizedBox(height: 10), // Adicionando espaçamento entre os itens da lista
+                    const SizedBox(
+                        height:
+                            10), // Adicionando espaçamento entre os itens da lista
                     Container(
-                      height: 90,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
-                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
                       ),
-                      child: const Text('02 de julho como data histórica', style: TextStyle(fontSize: 20)),
+                      child: const Text('02 de julho como data histórica',
+                          style: TextStyle(fontSize: 20)),
                     ),
-                    const SizedBox(height: 10), // Adicionando espaçamento entre os itens da lista
+                    const SizedBox(
+                        height:
+                            10), // Adicionando espaçamento entre os itens da lista
                     Container(
-                      height: 90,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black),
-                        borderRadius: const BorderRadius.all(Radius.circular(12)),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12)),
                       ),
-                      child: const Text('Objeto da patente em Território Nacional', style: TextStyle(fontSize: 20)),
+                      child: const Text(
+                          'Objeto da patente em Território Nacional',
+                          style: TextStyle(fontSize: 20)),
                     ),
                   ],
                 ),
