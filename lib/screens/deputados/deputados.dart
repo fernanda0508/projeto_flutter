@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../services/api_service.dart'; // Caminho para o serviço que faz chamadas de API
-import '../models/deputado.dart'; // Caminho para o modelo de dados Deputado
+import 'package:flutter_application_1/screens/deputados/deputado_detail_screen.dart';
+import '../../services/api_service.dart'; // Caminho para o serviço que faz chamadas de API
+import '../../models/deputado.dart'; // Caminho para o modelo de dados Deputado
 
 // Define uma StatefulWidget, DeputadosScreen, que é a tela onde os deputados serão listados.
 class DeputadosScreen extends StatefulWidget {
-  const DeputadosScreen({Key? key}) : super(key: key);
+  const DeputadosScreen({super.key});
 
   @override
   State<DeputadosScreen> createState() => _DeputadosScreenState();
@@ -54,49 +55,61 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
               itemBuilder: (context, index) {
                 Deputado dep =
                     snapshot.data![index]; // Deputado atual na lista.
-                return Card(
-                  elevation:
-                      5, // Elevação do Card para dar um efeito visual de profundidade.
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.all(8.0), // Padding interno do Card.
-                    child: Row(
-                      // Organiza conteúdo do Card em linha.
-                      children: <Widget>[
-                        Container(
-                          width: 80,
-                          height: 80,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              image: NetworkImage(dep.urlFoto),
-                              fit: BoxFit.cover,
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            DeputadoDetailScreen(deputado: dep),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    elevation:
+                        5, // Elevação do Card para dar um efeito visual de profundidade.
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.all(8.0), // Padding interno do Card.
+                      child: Row(
+                        // Organiza conteúdo do Card em linha.
+                        children: <Widget>[
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: NetworkImage(dep.urlFoto),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16.0), // Espaço entre a imagem e o texto.
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  dep.nome,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left:
+                                      16.0), // Espaço entre a imagem e o texto.
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    dep.nome,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text('Partido: ${dep.siglaPartido}'),
-                                Text('UF: ${dep.siglaUf}'),
-                              ],
+                                  Text('Partido: ${dep.siglaPartido}'),
+                                  Text('UF: ${dep.siglaUf}'),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
