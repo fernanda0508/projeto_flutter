@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/deputados.dart';
-import 'package:flutter_application_1/propostas.dart';
-import 'rodape.dart';
-import 'cabecalho.dart';
+import 'package:flutter_application_1/screens/deputados.dart';
+import 'package:flutter_application_1/screens/propostas.dart';
+import '../components/rodape.dart';
+import '../components/cabecalho.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
