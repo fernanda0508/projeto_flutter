@@ -47,7 +47,7 @@ class _PropostasScreenState extends State<PropostasScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetalhesPropostaScreen(proposta: proposta),
+                        builder: (context) => PropostaDetailScreen(propostaId: proposta.id),
                       ),
                     );
                   },

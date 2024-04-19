@@ -30,4 +30,15 @@ class ApiService {
       throw Exception('Failed to load propostas');
     }
   }
+
+  Future<Proposta> fetchPropostaById(int id) async {
+    final response = await http.get(Uri.parse('$baseUrlPropostas/$id'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> body = json.decode(response.body)['dados'];
+      return Proposta.fromJson(body);
+    } else {
+      throw Exception('Failed to load proposta with id: $id');
+    }
+  }
 }
