@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/deputados/deputados.dart';
-import 'package:flutter_application_1/screens/propostas/propostas.dart';
+import 'package:flutter_application_1/screens/partidos/partidos.dart';
 import '../components/rodape.dart';
 import '../components/cabecalho.dart';
 
@@ -31,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: IndexedStack(
           index: _selectedIndex,
           children: const <Widget>[
-            PropostasScreen(),
             DeputadosScreen(),
+            PartidosScreen(),
           ],
         ),
       ),

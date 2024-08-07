@@ -24,12 +24,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       backgroundColor: const Color.fromARGB(255, 4, 39, 100),
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.format_list_bulleted),
-          label: 'Propostas',
+          icon: Icon(Icons.person),
+          label: 'Deputados',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Deputados',
+          label: 'Partidos',
         ),
       ],
       currentIndex: widget.selectedIndex,
