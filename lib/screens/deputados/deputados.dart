@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/deputados/deputado_detail_screen.dart';
 import '../../services/api_service.dart'; // Caminho para o serviço que faz chamadas de API
-import '../../models/deputado.dart'; // Caminho para o modelo de dados Deputado
+import '../../models/deputadoGet.dart'; // Caminho para o modelo de dados Deputado
 
 // Define uma StatefulWidget, DeputadosScreen, que é a tela onde os deputados serão listados.
 class DeputadosScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class DeputadosScreen extends StatefulWidget {
 // Estado associado ao DeputadosScreen, onde a lógica da interface e dados são gerenciados.
 class _DeputadosScreenState extends State<DeputadosScreen> {
   // Declaração de uma variável para armazenar futuramente uma lista de Deputado.
-  late Future<List<Deputado>> futureDeputados;
+  late Future<List<DeputadoGet>> futureDeputados;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
         title: const Text('Deputados'), // Título da AppBar.
       ),
       // Usa um FutureBuilder para construir a interface baseada no estado da Future futureDeputados.
-      body: FutureBuilder<List<Deputado>>(
+      body: FutureBuilder<List<DeputadoGet>>(
         future: futureDeputados,
         builder: (context, snapshot) {
           // Verifica o estado da conexão da Future.
@@ -53,22 +53,16 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
               itemCount:
                   snapshot.data!.length, // Número de deputados recebidos.
               itemBuilder: (context, index) {
-                Deputado dep =
+                DeputadoGet dep =
                     snapshot.data![index]; // Deputado atual na lista.
                 // InkWell é um widget material que responde ao toque com um efeito de "splash".
                 return InkWell(
                   onTap: () {
-                    // Evento que é chamado quando o InkWell é tocado.
                     Navigator.push(
-                      // Navigator é o widget que gerencia a pilha de rotas (telas).
-                      context, // Contexto do widget atual, usado para encontrar o Navigator.
+                      context,
                       MaterialPageRoute(
-                        // MaterialPageRoute é uma rota que usa transições de tela do material design.
-                        builder:
-                            (context) => // Builder é uma função que constrói o widget para a nova rota.
-                                DeputadoDetailScreen(
-                                    deputado:
-                                        dep), // Cria a tela de detalhes para o deputado selecionado.
+                        builder: (context) =>
+                            DeputadoDetailScreen(deputadoId: dep.id),
                       ),
                     );
                   },

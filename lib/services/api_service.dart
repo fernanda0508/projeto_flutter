@@ -1,30 +1,74 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/deputado.dart';
+import '../models/deputadoGet.dart';
 
-// Define a classe ApiService que será responsável por toda comunicação com a API externa.
+import '../models/partido.dart';
+
 class ApiService {
-  // Define uma constante para a URL base da API da Câmara dos Deputados.
-  static const String baseUrl =
+  static const String baseUrlDeputados =
       'https://dadosabertos.camara.leg.br/api/v2/deputados';
+  static const String baseUrlPartidos =
+      'https://dadosabertos.camara.leg.br/api/v2/partidos';
 
-  // Método assíncrono que busca os deputados e retorna uma lista de objetos Deputado.
-  Future<List<Deputado>> fetchDeputados() async {
-    // Faz uma requisição GET para a URL da API, com parâmetros para ordenação por nome em ordem ascendente.
-    final response =
-        await http.get(Uri.parse('$baseUrl?ordem=ASC&ordenarPor=nome'));
+  Future<List<DeputadoGet>> fetchDeputados() async {
+    final response = await http
+        .get(Uri.parse('$baseUrlDeputados?ordem=ASC&ordenarPor=nome'));
 
-    // Verifica se a resposta da requisição foi bem-sucedida (código de status HTTP 200).
     if (response.statusCode == 200) {
-      // Decodifica o corpo da resposta que está em formato JSON.
       List<dynamic> body = json.decode(response.body)['dados'];
-      // Mapeia cada item do corpo decodificado para um objeto Deputado usando a factory Deputado.fromJson.
-      return body.map((dynamic item) => Deputado.fromJson(item)).toList();
+      return body.map((dynamic item) => DeputadoGet.fromJson(item)).toList();
     } else {
-      // Lança uma exceção se o status code não for 200, indicando falha no carregamento dos dados.
       throw Exception('Failed to load deputados');
     }
   }
 
-  // Aqui você pode adicionar mais métodos para diferentes endpoints
+  Future<List<Partido>> fetchPartidos() async {
+    final response = await http
+        .get(Uri.parse('$baseUrlPartidos?ordem=ASC&ordenarPor=sigla'));
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      if (jsonData['dados'] != null) {
+        List<dynamic> body = jsonData['dados'];
+        return body.map((dynamic item) => Partido.fromJson(item)).toList();
+      } else {
+        throw Exception('Dados ausentes na resposta');
+      }
+    } else {
+      throw Exception('Failed to load partidos');
+    }
+  }
+
+  Future<Deputado> fetchDeputadoById(int id) async {
+    final response = await http.get(Uri.parse('$baseUrlDeputados/$id'));
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      if (jsonData['dados'] != null) {
+        Map<String, dynamic> body = jsonData['dados'];
+        return Deputado.fromJson(body); // Return the correct model
+      } else {
+        throw Exception('Dados ausentes na resposta');
+      }
+    } else {
+      throw Exception('Failed to load deputado with id: $id');
+    }
+  }
+
+  Future<Partido> fetchPartidoById(int id) async {
+    final response = await http.get(Uri.parse('$baseUrlPartidos/$id'));
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      if (jsonData['dados'] != null) {
+        Map<String, dynamic> body = jsonData['dados'];
+        return Partido.fromJson(body);
+      } else {
+        throw Exception('Dados ausentes na resposta');
+      }
+    } else {
+      throw Exception('Failed to load partido with id: $id');
+    }
+  }
 }
