@@ -33,7 +33,6 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
 
   buscarDeputado(String value) async {
     var deputadosBuscados = await ApiService().fetchDeputadosByName(value);
-    // Get.off(() => DeputadosScreen(deputados: deputadosBuscados));
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(builder: (BuildContext context) => HomeScreen(deputadosBuscados: deputadosBuscados)),
 
