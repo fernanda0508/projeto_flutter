@@ -5,6 +5,7 @@ class StylizedHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final search = TextEditingController(); // Controller para o campo de pesquisa
     return Container(
       width: 300,
       padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -20,14 +21,7 @@ class StylizedHeader extends StatelessWidget {
           ),
         ],
       ),
-      child: const TextField(
-        decoration: InputDecoration(
-          hintText: "Search", // Placeholder text
-          prefixIcon: Icon(Icons.search), // Icon in the beginning
-          border: InputBorder.none, // Removes underline
-          contentPadding: EdgeInsets.symmetric(vertical: 15), // Center the text
-        ),
-      ),
+      child: Container()
     );
   }
 }

@@ -2,13 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/deputados/deputado_detail_screen.dart';
+import 'package:flutter_application_1/screens/home.dart';
 import '../../services/api_service.dart'; // Caminho para o serviço que faz chamadas de API
 import '../../models/deputadoGet.dart'; // Caminho para o modelo de dados Deputado
+import 'package:get/get.dart';
 
 // Define uma StatefulWidget, DeputadosScreen, que é a tela onde os deputados serão listados.
 class DeputadosScreen extends StatefulWidget {
-  const DeputadosScreen({super.key});
-
+  const DeputadosScreen({super.key, this.deputados});
+  final List<DeputadoGet>? deputados;
   @override
   State<DeputadosScreen> createState() => _DeputadosScreenState();
 }
@@ -22,7 +24,20 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
   void initState() {
     super.initState();
     // Inicializa a variável futureDeputados com o retorno da função fetchDeputados do ApiService.
-    futureDeputados = ApiService().fetchDeputados();
+    if (widget.deputados != null) {
+      futureDeputados = Future.value(widget.deputados);
+    } else {
+      futureDeputados = ApiService().fetchDeputados();
+    }
+  }
+
+  buscarDeputado(String value) async {
+    var deputadosBuscados = await ApiService().fetchDeputadosByName(value);
+    // Get.off(() => DeputadosScreen(deputados: deputadosBuscados));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(builder: (BuildContext context) => HomeScreen(deputadosBuscados: deputadosBuscados)),
+
+    );
   }
 
   @override
@@ -30,8 +45,19 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
     // Cria um Scaffold, que fornece a estrutura visual básica para a tela.
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Deputados'), // Título da AppBar.
-      ),
+          title: Column(children: [
+        TextField(
+          onSubmitted: buscarDeputado,
+          decoration: InputDecoration(
+            hintText: "Search", // Placeholder text
+            prefixIcon: Icon(Icons.search), // Icon in the beginning
+            border: InputBorder.none, // Removes underline
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 15), // Center the text
+          ),
+        ),
+        Text('Deputados'), // Título da AppBar.
+      ])),
       // Usa um FutureBuilder para construir a interface baseada no estado da Future futureDeputados.
       body: FutureBuilder<List<DeputadoGet>>(
         future: futureDeputados,
@@ -67,8 +93,8 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
                     );
                   },
                   child: Card(
-                    elevation:
-                        5, // Elevação do Card para dar um efeito visual de profundidade.
+                    elevation: 5,
+                    // Elevação do Card para dar um efeito visual de profundidade.
                     child: Padding(
                       padding:
                           const EdgeInsets.all(8.0), // Padding interno do Card.

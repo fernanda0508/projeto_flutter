@@ -3,9 +3,11 @@ import 'package:flutter_application_1/screens/deputados/deputados.dart';
 import 'package:flutter_application_1/screens/partidos/partidos.dart';
 import '../components/rodape.dart';
 import '../components/cabecalho.dart';
+import '../models/deputadoGet.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, this.deputadosBuscados});
+  final List<DeputadoGet>? deputadosBuscados;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -25,14 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
       body: Center(
         // O conteúdo que muda com base na navegação
         child: IndexedStack(
           index: _selectedIndex,
-          children: const <Widget>[
-            DeputadosScreen(),
-            PartidosScreen(),
+          children: <Widget>[
+            DeputadosScreen(deputados: widget.deputadosBuscados),
+            const PartidosScreen(),
           ],
         ),
       ),
