@@ -20,14 +20,7 @@ class StylizedHeader extends StatelessWidget {
           ),
         ],
       ),
-      child: const TextField(
-        decoration: InputDecoration(
-          hintText: "Search", // Placeholder text
-          prefixIcon: Icon(Icons.search), // Icon in the beginning
-          border: InputBorder.none, // Removes underline
-          contentPadding: EdgeInsets.symmetric(vertical: 15), // Center the text
-        ),
-      ),
+      child: Container()
     );
   }
 }
