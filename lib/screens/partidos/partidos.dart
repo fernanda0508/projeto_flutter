@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../services/api_service.dart'; // Caminho para o serviço que faz chamadas de API
 import '../../models/partido.dart'; // Caminho para o modelo de dados Partido
+import '../home.dart';
 import 'partido_detail_screen.dart'; // Tela de detalhes do partido
 
 class PartidosScreen extends StatefulWidget {
-  const PartidosScreen({super.key});
+  const PartidosScreen({super.key, this.partido});
+  final List<Partido>? partido;
 
   @override
   State<PartidosScreen> createState() => _PartidosScreenState();
@@ -16,14 +18,57 @@ class _PartidosScreenState extends State<PartidosScreen> {
   @override
   void initState() {
     super.initState();
-    futurePartidos = ApiService().fetchPartidos();
+    if (widget.partido != null) {
+      futurePartidos = Future.value(widget.partido);
+    } else {
+      futurePartidos = ApiService().fetchPartidos();
+    }
+  }
+
+  buscarPartido(String value) async {
+    var partidosBuscados = await ApiService().fetchPartidoByName(value);
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => HomeScreen(partidosBuscados: partidosBuscados),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Partidos'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 8.0), // Margem para separar o campo de busca do título
+              child: TextField(
+                onSubmitted: buscarPartido,
+                decoration: InputDecoration(
+                  hintText: "Buscar",
+                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+              ),
+            ),
+            Text(
+              'Partidos',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+          ],
+        ),
+        toolbarHeight: 120, // Altura personalizada para acomodar o TextField e o título
       ),
       body: FutureBuilder<List<Partido>>(
         future: futurePartidos,
@@ -42,7 +87,6 @@ class _PartidosScreenState extends State<PartidosScreen> {
                 Partido partido = snapshot.data![index];
                 return InkWell(
                   onTap: () {
-                    // Navega para a tela de detalhes do partido ao clicar em um item
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -59,14 +103,14 @@ class _PartidosScreenState extends State<PartidosScreen> {
                         children: <Widget>[
                           partido.urlLogo != null && partido.urlLogo!.isNotEmpty
                               ? Image.network(
-                                  partido.urlLogo!,
-                                  width: 80,
-                                  height: 80,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return _buildLogoPlaceholder(partido.sigla);
-                                  },
-                                )
+                            partido.urlLogo!,
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return _buildLogoPlaceholder(partido.sigla);
+                            },
+                          )
                               : _buildLogoPlaceholder(partido.sigla),
                           Expanded(
                             child: Padding(

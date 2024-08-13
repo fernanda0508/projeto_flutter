@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/partido.dart';
 import 'package:flutter_application_1/screens/deputados/deputados.dart';
 import 'package:flutter_application_1/screens/partidos/partidos.dart';
 import '../components/rodape.dart';
-import '../components/cabecalho.dart';
 import '../models/deputadoGet.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.deputadosBuscados});
+  const HomeScreen({super.key, this.deputadosBuscados, this.partidosBuscados});
   final List<DeputadoGet>? deputadosBuscados;
+  final List<Partido>? partidosBuscados;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
           index: _selectedIndex,
           children: <Widget>[
             DeputadosScreen(deputados: widget.deputadosBuscados),
-            const PartidosScreen(),
+            PartidosScreen(partido: widget.partidosBuscados,),
           ],
         ),
       ),
