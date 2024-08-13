@@ -56,6 +56,22 @@ class ApiService {
     }
   }
 
+  Future<List<DeputadoGet>> fetchDeputadosByName(String name) async {
+    List<DeputadoGet> deputados = await fetchDeputados();
+    return deputados
+        .where((deputado) =>
+            deputado.nome.toLowerCase().contains(name.toLowerCase()))
+        .toList();
+  }
+
+  Future<List<Partido>> fetchPartidoByName(String name) async {
+    List<Partido> partidos = await fetchPartidos();
+    return partidos
+        .where((partido) =>
+            partido.nome.toLowerCase().contains(name.toLowerCase()))
+        .toList();
+  }
+
   Future<Partido> fetchPartidoById(int id) async {
     final response = await http.get(Uri.parse('$baseUrlPartidos/$id'));
 
