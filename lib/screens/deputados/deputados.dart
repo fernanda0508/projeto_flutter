@@ -5,8 +5,9 @@ import '../../services/api_service.dart'; // Caminho para o serviço que faz cha
 import '../../models/deputadoGet.dart'; // Caminho para o modelo de dados Deputado
 
 class DeputadosScreen extends StatefulWidget {
-  const DeputadosScreen({super.key, this.deputados});
+  const DeputadosScreen({super.key, this.deputados, required this.userName});
   final List<DeputadoGet>? deputados;
+  final String userName;
 
   @override
   State<DeputadosScreen> createState() => _DeputadosScreenState();
@@ -25,11 +26,11 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
     }
   }
 
-  buscarDeputado(String value) async {
+  buscarDeputado(String value, String nome) async {
     var deputadosBuscados = await ApiService().fetchDeputadosByName(value);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-        builder: (BuildContext context) => HomeScreen(deputadosBuscados: deputadosBuscados),
+        builder: (BuildContext context) => HomeScreen(deputadosBuscados: deputadosBuscados, userName: nome,),
       ),
     );
   }
@@ -44,21 +45,21 @@ class _DeputadosScreenState extends State<DeputadosScreen> {
             Container(
               margin: const EdgeInsets.only(bottom: 8.0), // Margem para separar o campo de busca do título
               child: TextField(
-                onSubmitted: buscarDeputado,
+                onSubmitted: (value) => buscarDeputado(value, widget.userName),
                 decoration: InputDecoration(
                   hintText: "Buscar", // Texto de placeholder
-                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
                   fillColor: Colors.grey[200],
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
               ),
             ),
-            Text(
+            const Text(
               'Deputados',
               style: TextStyle(
                 fontSize: 20,

@@ -5,8 +5,9 @@ import '../home.dart';
 import 'partido_detail_screen.dart'; // Tela de detalhes do partido
 
 class PartidosScreen extends StatefulWidget {
-  const PartidosScreen({super.key, this.partido});
+  const PartidosScreen({super.key, this.partido, required this.userName});
   final List<Partido>? partido;
+  final String userName;
 
   @override
   State<PartidosScreen> createState() => _PartidosScreenState();
@@ -25,11 +26,11 @@ class _PartidosScreenState extends State<PartidosScreen> {
     }
   }
 
-  buscarPartido(String value) async {
+  buscarPartido(String value, String nome) async {
     var partidosBuscados = await ApiService().fetchPartidoByName(value);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-        builder: (BuildContext context) => HomeScreen(partidosBuscados: partidosBuscados),
+        builder: (BuildContext context) => HomeScreen(partidosBuscados: partidosBuscados, selectedIndex: 1, userName: nome,),
       ),
     );
   }
@@ -44,21 +45,21 @@ class _PartidosScreenState extends State<PartidosScreen> {
             Container(
               margin: const EdgeInsets.only(bottom: 8.0), // Margem para separar o campo de busca do título
               child: TextField(
-                onSubmitted: buscarPartido,
+                onSubmitted: (value) => buscarPartido(value, widget.userName),
                 decoration: InputDecoration(
                   hintText: "Buscar",
-                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none,
                   ),
                   filled: true,
                   fillColor: Colors.grey[200],
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
               ),
             ),
-            Text(
+            const Text(
               'Partidos',
               style: TextStyle(
                 fontSize: 20,
