@@ -85,7 +85,7 @@ class DeputadoDetailScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   _buildPersonalInfoCard(deputado),
                   const SizedBox(height: 20),
-                  _buildOfficeCard(deputado.ultimoStatus?.gabinete),
+                  _buildOfficeCard(deputado, deputado.ultimoStatus?.gabinete),
                   const SizedBox(height: 20),
                   _buildStatusCard(deputado),
                 ],
@@ -102,7 +102,7 @@ class DeputadoDetailScreen extends StatelessWidget {
         .format(DateTime.parse(deputado.dataNascimento!));
     final String? deathDate = deputado.dataFalecimento != null
         ? DateFormat('dd/MM/yyyy')
-            .format(DateTime.parse(deputado.dataFalecimento!))
+        .format(DateTime.parse(deputado.dataFalecimento!))
         : null;
 
     return Card(
@@ -134,7 +134,7 @@ class DeputadoDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOfficeCard(Gabinete? gabinete) {
+  Widget _buildOfficeCard(Deputado deputado, Gabinete? gabinete) {
     if (gabinete == null) {
       return Container(); // Exibe um container vazio se gabinete for null
     }
@@ -148,17 +148,14 @@ class DeputadoDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Gabinete',
-              style: TextStyle(
+            Text(
+              'Gabinete do ${deputado.ultimoStatus?.nomeEleitoral ?? deputado.nomeCivil}',
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
                 color: Colors.deepPurple,
               ),
             ),
-            const SizedBox(height: 10),
-            _buildInfoRow(
-                Icons.room, 'Nome:', gabinete.nome ?? 'Não disponível'),
             const SizedBox(height: 10),
             _buildInfoRow(Icons.apartment, 'Prédio:',
                 gabinete.predio ?? 'Não disponível'),
@@ -208,9 +205,8 @@ class DeputadoDetailScreen extends StatelessWidget {
         Text(
           title,
           style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+              fontWeight: FontWeight.bold,
+              fontSize: 16),
         ),
         const SizedBox(width: 5),
         Expanded(

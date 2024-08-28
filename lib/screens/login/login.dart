@@ -31,13 +31,21 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 32.0),
             ElevatedButton(
               onPressed: () {
-                // Passa o nome do usuário para a HomeScreen
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(userName: nameController.text),
-                  ),
-                );
+                // Verifica se os campos têm pelo menos dois caracteres
+                if (nameController.text.length >= 2 && passwordController.text.length >= 2) {
+                  // Passa o nome do usuário para a HomeScreen
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(userName: nameController.text),
+                    ),
+                  );
+                } else {
+                  // Exibe uma mensagem de erro se a validação falhar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Digite pelo menos 2 caracteres em cada campo.')),
+                  );
+                }
               },
               child: const Text('Login'),
             ),
