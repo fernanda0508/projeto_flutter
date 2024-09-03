@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../models/deputado.dart';
 import '../../services/api_service.dart';
+import 'despesas_deputado_screen.dart'; // Importe a tela de despesas do deputado
 
 class DeputadoDetailScreen extends StatelessWidget {
   final int deputadoId;
@@ -88,6 +89,8 @@ class DeputadoDetailScreen extends StatelessWidget {
                   _buildOfficeCard(deputado, deputado.ultimoStatus?.gabinete),
                   const SizedBox(height: 20),
                   _buildStatusCard(deputado),
+                  const SizedBox(height: 20),
+                  _buildDespesasButton(context), // Adiciona o botão de despesas
                 ],
               ),
             );
@@ -102,7 +105,7 @@ class DeputadoDetailScreen extends StatelessWidget {
         .format(DateTime.parse(deputado.dataNascimento!));
     final String? deathDate = deputado.dataFalecimento != null
         ? DateFormat('dd/MM/yyyy')
-        .format(DateTime.parse(deputado.dataFalecimento!))
+            .format(DateTime.parse(deputado.dataFalecimento!))
         : null;
 
     return Card(
@@ -196,6 +199,30 @@ class DeputadoDetailScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildDespesasButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                DespesasDeputadoScreen(deputadoId: deputadoId),
+          ),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurple, // Cor de fundo do botão
+      ),
+      child: const Text(
+        'Despesas (Cota Parlamentar)',
+        style: TextStyle(
+          color: Colors.white, // Cor do texto do botão
+          fontWeight: FontWeight.bold, // Deixar o texto em negrito
+        ),
+      ),
+    );
+  }
+
   Widget _buildInfoRow(IconData icon, String title, String value) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,9 +231,7 @@ class DeputadoDetailScreen extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(width: 5),
         Expanded(
