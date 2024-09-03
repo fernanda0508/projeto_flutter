@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/deputado.dart';
 import '../models/deputadoGet.dart';
-
+import '../models/membro_partido.dart';
 import '../models/partido.dart';
 
 class ApiService {
@@ -37,6 +37,17 @@ class ApiService {
       }
     } else {
       throw Exception('Failed to load partidos');
+    }
+  }
+
+  Future<List<MembroPartido>> fetchMembrosPartido(int partidoId) async {
+    final response = await http.get(Uri.parse('$baseUrlPartidos/$partidoId/membros'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = json.decode(response.body)['dados'];
+      return body.map((dynamic item) => MembroPartido.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load membros do partido');
     }
   }
 
