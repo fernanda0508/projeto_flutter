@@ -3,6 +3,7 @@ import 'package:intl/intl.dart'; // Importe o pacote intl
 import '../../models/partido.dart';
 import '../../services/api_service.dart';
 import '../deputados/deputado_detail_screen.dart'; // Importe a tela de detalhes do deputado
+import 'membros_partido_screen.dart'; // Importe a tela de membros do partido
 
 class PartidoDetailScreen extends StatelessWidget {
   final int partidoId;
@@ -44,13 +45,13 @@ class PartidoDetailScreen extends StatelessWidget {
                         children: [
                           partido.urlLogo != null && partido.urlLogo!.isNotEmpty
                               ? Image.network(
-                            partido.urlLogo!,
-                            height: 60,
-                            width: 60,
-                            errorBuilder: (context, error, stackTrace) {
-                              return _buildLogoPlaceholder(partido.sigla);
-                            },
-                          )
+                                  partido.urlLogo!,
+                                  height: 60,
+                                  width: 60,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return _buildLogoPlaceholder(partido.sigla);
+                                  },
+                                )
                               : _buildLogoPlaceholder(partido.sigla),
                           const SizedBox(width: 16),
                           Expanded(
@@ -73,14 +74,45 @@ class PartidoDetailScreen extends StatelessWidget {
                   if (partido.status != null)
                     _buildStatusCard(context, partido.status!),
                   const SizedBox(height: 20),
-                  _buildLeaderCard(context, partido.status?.lider), // Chama a função de líder
+                  _buildLeaderCard(context,
+                      partido.status?.lider), // Chama a função de líder
                   const SizedBox(height: 20),
                   _buildLinks(partido),
+                  const SizedBox(height: 20),
+                  _buildMembrosButton(
+                      context, partido), // Botão para listar membros
                 ],
               ),
             );
           }
         },
+      ),
+    );
+  }
+
+  // Função para criar o botão de membros
+  Widget _buildMembrosButton(BuildContext context, Partido partido) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MembrosPartidoScreen(
+              partidoId: partido.id,
+              partidoNome: partido.nome,
+            ),
+          ),
+        );
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurple, // Cor de fundo do botão
+      ),
+      child: const Text(
+        'Ver Membros',
+        style: TextStyle(
+          color: Colors.white, // Cor do texto
+          fontWeight: FontWeight.bold, // Texto em negrito
+        ),
       ),
     );
   }
@@ -131,7 +163,7 @@ class PartidoDetailScreen extends StatelessWidget {
   Widget _buildStatusCard(BuildContext context, StatusPartido status) {
     final DateTime dateTime = DateTime.parse(status.data);
     final String formattedDate =
-    DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+        DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
 
     return Card(
       elevation: 3,
@@ -197,22 +229,22 @@ class PartidoDetailScreen extends StatelessWidget {
                 children: [
                   lider.urlFoto.isNotEmpty
                       ? Image.network(
-                    lider.urlFoto,
-                    height: 80,
-                    width: 80,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        width: 80,
-                        height: 80,
-                        color: Colors.grey,
-                      );
-                    },
-                  )
+                          lider.urlFoto,
+                          height: 80,
+                          width: 80,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 80,
+                              height: 80,
+                              color: Colors.grey,
+                            );
+                          },
+                        )
                       : Container(
-                    width: 80,
-                    height: 80,
-                    color: Colors.grey,
-                  ),
+                          width: 80,
+                          height: 80,
+                          color: Colors.grey,
+                        ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
@@ -263,9 +295,7 @@ class PartidoDetailScreen extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           title,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(width: 5),
         Expanded(
@@ -286,9 +316,7 @@ class PartidoDetailScreen extends StatelessWidget {
         const SizedBox(width: 8),
         Text(
           '$title:',
-          style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
         const SizedBox(width: 5),
         Expanded(
